@@ -4,6 +4,29 @@
 
 <link rel="stylesheet" href="{{ asset('css/bs-stepper.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/form-wizard.css') }}">
+<style>
+    .image-checkbox input[type="checkbox"] {
+        display: none;
+    }
+
+    .image-checkbox-checked {
+        border: 3px solid transparent;
+        border-color: #69a5d3;
+        box-shadow: 3px 2px 20px #74abd8;
+    }
+
+    .img-responsive {
+        width: 200px;
+    }
+
+    .image-checkbox .fa {
+        position: absolute;
+        color: #0387fa;
+        background-color: rgb(228, 220, 220);
+        padding: 2px;
+        right:22px;
+    }
+</style>
 
 <div class="col-md-6 offset-md-4 mb-3">
     <h4 id="artcha" data-toggle="modal" data-target="#exampleModalCenter">
@@ -72,15 +95,57 @@
                                             <button type="button" id="send-sms" class="btn btn-primary"><i
                                                     class="fas fa-paper-plane"></i> Send
                                             </button>
-
                                         </div>
-
                                     </div>
                                 </div>
                                 <div id="personal-info-modern" class="content">
                                     <div class="content-header">
-                                        <h5 class="mb-0">Personal Info</h5>
-                                        <small>Enter Your Personal Info.</small>
+                                        <h5 class="mb-0">ARTCHA</h5>
+                                        <small>Choose Image that shown 3D Object</small>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-4 nopad text-center">
+                                            <label class="image-checkbox">
+                                                <img class="img-responsive"
+                                                    src="{{ asset('marker_image/pattern-2.png') }}" />
+                                                <input type="checkbox" name="image[]" value="" />
+                                            </label>
+                                        </div>
+                                        <div class="col-md-4 nopad text-center">
+                                            <label class="image-checkbox">
+                                                <img class="img-responsive"
+                                                    src="{{ asset('marker_image/pattern-3.png') }}" />
+                                                <input type="checkbox" name="image[]" value="" />
+                                            </label>
+                                        </div>
+                                        <div class="col-md-4 nopad text-center">
+                                            <label class="image-checkbox">
+                                                <img class="img-responsive p-0"
+                                                    src="{{ asset('marker_image/pattern-4.png') }}" />
+                                                <input type="checkbox" name="image[]" value="" />
+                                            </label>
+                                        </div>
+                                        <div class="col-md-4 nopad text-center">
+                                            <label class="image-checkbox">
+                                                <img class="img-responsive"
+                                                    src="{{ asset('marker_image/pattern-5.png') }}" />
+                                                <input type="checkbox" name="image[]" value="" />
+                                            </label>
+                                        </div>
+                                        <div class="col-md-4 nopad text-center">
+                                            <label class="image-checkbox">
+                                                <img class="img-responsive"
+                                                    src="{{ asset('marker_image/pattern-6.png') }}" />
+                                                <input type="checkbox" name="image[]" value="" />
+                                            </label>
+                                        </div>
+                                        <div class="col-md-4 nopad text-center">
+                                            <label class="image-checkbox">
+                                                <img class="img-responsive p-0"
+                                                    src="{{ asset('marker_image/pattern-7.png') }}" />
+                                                <input type="checkbox" name="image[]" value="" />
+                                            </label>
+                                        </div>
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <button type="button" class="btn btn-primary btn-prev">
@@ -110,6 +175,21 @@
 <script src="{{ asset('js/form-wizard.js') }}"></script>
 <script src="{{ asset('js/bs-stepper.min.js') }}"></script>
 <script>
+    $(".image-checkbox").each(function() {
+        if ($(this).find('input[type="checkbox"]').first().attr("checked")) {
+            $(this).addClass('image-checkbox-checked');
+        } else {
+            $(this).removeClass('image-checkbox-checked');
+        }
+    });
+
+    // sync the state to the input
+    $(".image-checkbox").on("click", function(e) {
+        $(this).toggleClass('image-checkbox-checked');
+        var $checkbox = $(this).find('input[type="checkbox"]');
+        $checkbox.prop("checked", !$checkbox.prop("checked"))
+        e.preventDefault();
+    });
     $('#send-sms').click(function() {
         if ($('#phone').val().length < 1) {
             $('#phone').css('box-shadow', '2px 2px 20px rgba(200, 0, 0, 0.85)');
@@ -146,10 +226,11 @@
         script.type = "text/javascript";
         script.src = "https://api.ipify.org?format=jsonp&callback=DisplayIP";
         document.getElementsByTagName("head")[0].appendChild(script);
+
     });
+
 
     function DisplayIP(response) {
         $('#ip-address').val(response.ip);
     }
-
 </script>
