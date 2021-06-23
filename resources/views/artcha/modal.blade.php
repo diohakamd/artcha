@@ -24,8 +24,9 @@
         color: #0387fa;
         background-color: rgb(228, 220, 220);
         padding: 2px;
-        right:22px;
+        right: 22px;
     }
+
 </style>
 
 <div class="col-md-6 offset-md-4 mb-3">
@@ -175,6 +176,7 @@
 <script src="{{ asset('js/form-wizard.js') }}"></script>
 <script src="{{ asset('js/bs-stepper.min.js') }}"></script>
 <script>
+    
     $(".image-checkbox").each(function() {
         if ($(this).find('input[type="checkbox"]').first().attr("checked")) {
             $(this).addClass('image-checkbox-checked');
@@ -190,6 +192,7 @@
         $checkbox.prop("checked", !$checkbox.prop("checked"))
         e.preventDefault();
     });
+
     $('#send-sms').click(function() {
         if ($('#phone').val().length < 1) {
             $('#phone').css('box-shadow', '2px 2px 20px rgba(200, 0, 0, 0.85)');
@@ -216,21 +219,8 @@
             })
         }
     });
+
     $('#phone').keypress(function() {
         $(this).css('box-shadow', '2px 2px 20px #cce3f6');
     });
-
-    // get ip
-    $(document).ready(function() {
-        var script = document.createElement("script");
-        script.type = "text/javascript";
-        script.src = "https://api.ipify.org?format=jsonp&callback=DisplayIP";
-        document.getElementsByTagName("head")[0].appendChild(script);
-
-    });
-
-
-    function DisplayIP(response) {
-        $('#ip-address').val(response.ip);
-    }
 </script>
