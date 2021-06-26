@@ -106,54 +106,55 @@
                                     </div>
                                     <div class="row form-group">
                                         <div class="col-md-4 nopad text-center">
-                                            <label class="image-checkbox">
+                                            <label class="image-checkbox" id="2">
                                                 <img class="img-responsive"
                                                     src="{{ asset('marker_image/pattern-2.png') }}" />
                                                 <input type="checkbox" name="image[]" value="" />
                                             </label>
                                         </div>
                                         <div class="col-md-4 nopad text-center">
-                                            <label class="image-checkbox">
+                                            <label class="image-checkbox" id="3">
                                                 <img class="img-responsive"
                                                     src="{{ asset('marker_image/pattern-3.png') }}" />
                                                 <input type="checkbox" name="image[]" value="" />
                                             </label>
                                         </div>
                                         <div class="col-md-4 nopad text-center">
-                                            <label class="image-checkbox">
+                                            <label class="image-checkbox" id="4">
                                                 <img class="img-responsive p-0"
                                                     src="{{ asset('marker_image/pattern-4.png') }}" />
                                                 <input type="checkbox" name="image[]" value="" />
                                             </label>
                                         </div>
                                         <div class="col-md-4 nopad text-center">
-                                            <label class="image-checkbox">
+                                            <label class="image-checkbox" id="5">
                                                 <img class="img-responsive"
                                                     src="{{ asset('marker_image/pattern-5.png') }}" />
                                                 <input type="checkbox" name="image[]" value="" />
                                             </label>
                                         </div>
                                         <div class="col-md-4 nopad text-center">
-                                            <label class="image-checkbox">
+                                            <label class="image-checkbox" id="6">
                                                 <img class="img-responsive"
                                                     src="{{ asset('marker_image/pattern-6.png') }}" />
                                                 <input type="checkbox" name="image[]" value="" />
                                             </label>
                                         </div>
                                         <div class="col-md-4 nopad text-center">
-                                            <label class="image-checkbox">
+                                            <label class="image-checkbox" id="7">
                                                 <img class="img-responsive p-0"
                                                     src="{{ asset('marker_image/pattern-7.png') }}" />
                                                 <input type="checkbox" name="image[]" value="" />
                                             </label>
                                         </div>
                                     </div>
+                                    <input type="text" id="key">
                                     <div class="d-flex justify-content-between">
                                         <button type="button" class="btn btn-primary btn-prev">
                                             <i data-feather="arrow-left" class="align-middle mr-sm-25 mr-0"></i>
                                             <span class="align-middle d-sm-inline-block d-none">Previous</span>
                                         </button>
-                                        <button type="button" class="btn btn-primary btn-next">
+                                        <button type="button" id="check-btn" class="btn btn-primary btn-next ">
                                             <span class="align-middle d-sm-inline-block d-none">Next</span>
                                             <i data-feather="arrow-right" class="align-middle ml-sm-25 ml-0"></i>
                                         </button>
@@ -176,24 +177,24 @@
 <script src="{{ asset('js/form-wizard.js') }}"></script>
 <script src="{{ asset('js/bs-stepper.min.js') }}"></script>
 <script>
-    
-    $(".image-checkbox").each(function() {
-        if ($(this).find('input[type="checkbox"]').first().attr("checked")) {
-            $(this).addClass('image-checkbox-checked');
-        } else {
-            $(this).removeClass('image-checkbox-checked');
-        }
-    });
+    function randomNumber() {
 
-    // sync the state to the input
-    $(".image-checkbox").on("click", function(e) {
-        $(this).toggleClass('image-checkbox-checked');
-        var $checkbox = $(this).find('input[type="checkbox"]');
-        $checkbox.prop("checked", !$checkbox.prop("checked"))
-        e.preventDefault();
-    });
+        const num = [];
+        num[0] = 2;
+        num[1] = 2;
+        num[2] = 2;
+
+        while (num[0] == num[1] || num[0] == num[2] || num[1] == num[2]) {
+            num[0] = Math.floor(Math.random() * (7 - 2 + 1)) + 2;
+            num[1] = Math.floor(Math.random() * (7 - 2 + 1)) + 2;
+            num[2] = Math.floor(Math.random() * (7 - 2 + 1)) + 2;
+        }
+
+        return num.sort();
+    }
 
     $('#send-sms').click(function() {
+        var num = randomNumber();
         if ($('#phone').val().length < 1) {
             $('#phone').css('box-shadow', '2px 2px 20px rgba(200, 0, 0, 0.85)');
         } else {
@@ -209,18 +210,47 @@
                 url: '/sms',
                 data: {
                     'phone': phone,
-                    'ip': ip
+                    'num': num
                 },
                 success: function(data) {
                     alert("Link Sent to " + phone);
                     $('#artcha-form').attr('disabled', false)
                     $('#artcha-form').trigger('#send-sms').click();
+
+                    let key = num[0] + ',' + num[1] + ',' + num[2];
+                    let check = checkKey(key);
                 }
             })
         }
     });
 
+    function checkKey(key) {
+        $('#check-btn').click(function() {
+        var checked = [],
+            selected = '';
+            for (var i = 0; i < $(".image-checkbox-checked").length; i++) {
+                checked[i] = $(".image-checkbox-checked")[i].id;
+            }
+            selected = checked.toString();
+            if(key == selected){
+                $('#key').val(true);
+                console.log(true);
+            }else{
+                $('#key').val(false);
+                console.log(false);
+            }
+        });
+    }
+
     $('#phone').keypress(function() {
         $(this).css('box-shadow', '2px 2px 20px #cce3f6');
+    });
+
+    // sync the state to the input
+    $(".image-checkbox").click(function(e) {
+        $(this).toggleClass('image-checkbox-checked');
+        var $checkbox = $(this).find('input[type="checkbox"]');
+        $checkbox.prop("checked", !$checkbox.prop("checked"))
+        e.preventDefault();
     });
 </script>
