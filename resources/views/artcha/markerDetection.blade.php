@@ -17,12 +17,12 @@ integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="ano
     <input type="hidden" id="num" value="{{ $num }}">
 
     <a-scene embedded arjs>
-        <a-marker type="pattern" url="/marker_patt/pattern-2.patt" id="3Dobj-2"></a-marker>
-        <a-marker type="pattern" url="/marker_patt/pattern-3.patt" id="3Dobj-3"></a-marker>
-        <a-marker type="pattern" url="/marker_patt/pattern-4.patt" id="3Dobj-4"></a-marker>
-        <a-marker type="pattern" url="/marker_patt/pattern-5.patt" id="3Dobj-5"></a-marker>
-        <a-marker type="pattern" url="/marker_patt/pattern-6.patt" id="3Dobj-6"></a-marker>
-        <a-marker type="pattern" url="/marker_patt/pattern-7.patt" id="3Dobj-7"></a-marker>
+        <a-marker type="pattern" url="/artcha/marker_patt/pattern-2.patt" id="3Dobj-2"></a-marker>
+        <a-marker type="pattern" url="/artcha/marker_patt/pattern-3.patt" id="3Dobj-3"></a-marker>
+        <a-marker type="pattern" url="/artcha/marker_patt/pattern-4.patt" id="3Dobj-4"></a-marker>
+        <a-marker type="pattern" url="/artcha/marker_patt/pattern-5.patt" id="3Dobj-5"></a-marker>
+        <a-marker type="pattern" url="/artcha/marker_patt/pattern-6.patt" id="3Dobj-6"></a-marker>
+        <a-marker type="pattern" url="/artcha/marker_patt/pattern-7.patt" id="3Dobj-7"></a-marker>
         <a-entity camera></a-entity>
     </a-scene>
 </body>
