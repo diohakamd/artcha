@@ -16,10 +16,11 @@ class SMSController extends Controller
         $numEncrypt = Crypt::encryptString($num);
 
         $to = $request->phone;
+        $link = 'https://063412e8e77d.ngrok.io/detect/'.$numEncrypt;
         // Nexmo::message()->send([
         //     'to' => $to,
         //     'from' => 'ARTCHA',
-        //     'text' => 'Scan the Image using this link >>> https://7b09eafe80ea.ngrok.io <<< '
+        //     'text' => 'Scan the Image using this link '.$link.'  <<< '
         // ]);
 
         return response()->json($numEncrypt);

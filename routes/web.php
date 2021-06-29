@@ -25,6 +25,7 @@ Route::get('/register_example', function () {
 });
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/testing', [App\Http\Controllers\HomeController::class, 'test']);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/detect/{num}', [App\Http\Controllers\MarkerDetectionController::class, 'index']);
 Route::post('/sms', [App\Http\Controllers\SMSController::class, 'index'])->name('send-sms');

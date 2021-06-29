@@ -228,7 +228,8 @@
                                     <input type="hidden" id="key"><br>
                                     <div class="d-flex justify-content-between">
                                         {{-- check-btn --}}
-                                        <button class="btn btn-block btn-success" id="check-btn">Check</button>
+                                        <button type="button" class="btn btn-block btn-success"
+                                            id="check-btn">Check</button>
                                     </div>
                                 </div>
                                 <div id="result" class="content">
@@ -327,7 +328,7 @@
             selected = checked.toString();
             if (key == selected) {
                 $('#result').html(
-                    '<div class="card bg-success"><div class="card-body text-center"><img style="width: 30%; border: 5px solid rgb(255, 255, 255); border-radius: 50%;" src="{{ asset('artcha/icon/true.svg') }}" alt=""><div style="margin-left:-21px; margin-bottom:-21px; width: 818px;" class="alert alert-success mt-4" role="alert"><span class=""><b>CAPTCHA SUCCESS</b></span></div></div></div>'
+                    '<div class="card bg-success"><div class="card-body text-center"><img style="width: 30%; border: 5px solid rgb(255, 255, 255); border-radius: 50%;" src="{{ asset('artcha/icon/true.svg') }}" alt=""><div style="margin-left:-21px; margin-bottom:-21px; width: 818px;" class="alert alert-success mt-4" role="alert"><span class=""><b>CAPTCHA VALID</b></span></div></div></div>'
                 );
                 $('#result-view').attr('disabled', false);
                 $('#result-view').trigger('#send-sms').click();
@@ -336,12 +337,56 @@
                 $("#artcha").attr('data-toggle', 'valid');
             } else {
                 $('#result').html(
-                    '<div class="card bg-danger"><div class="card-body text-center"><img style="width: 30%; border: 5px solid rgb(255, 255, 255); border-radius: 50%;" src="{{ asset('artcha/icon/false.svg') }}" alt=""> <div style="margin-left:-21px; margin-bottom:-21px; width: 818px;" class="alert alert-danger mt-4" role="alert"> <span class=""><b>CAPTCHA SUCCESS   </b></span></div></div></div>'
+                    '<div class="card bg-danger"><div class="card-body text-center"><img style="width: 30%; border: 5px solid rgb(255, 255, 255); border-radius: 50%;" src="{{ asset('artcha/icon/false.svg') }}" alt=""> <div style="margin-left:-21px; margin-bottom:-21px; width: 818px;" class="alert alert-danger mt-4" role="alert"> <span class=""><b>CAPTCHA INVALID, <i>PLEASE TRY AGAIN</i> !</b></span></div></div></div><div class="text-center mt-5"><button type="button" id="reset-artcha" class="btn btn-outline-light btn-lg">Try Again</button></div>'
                 );
                 $('#result-view').attr('disabled', false);
                 $('#result-view').trigger('#send-sms').click();
+                $('#reset-artcha').click(function() {
+                    var newKey = resetCaptcha(key);
+                    console.log(newKey);
+                    checkKey(newKey);
+                });
             }
         });
+    }
+
+    function resetCaptcha(key) {
+        var newKey = key.split(',');
+        var num = [];
+        num[0] = newKey[0];
+        num[1] = newKey[1];
+        num[2] = newKey[2];
+        if (num[0] <= 5) {
+            num[0] = parseInt(num[0]) + 2;
+        } else {
+            num[0] = parseInt(num[0]) - 3;
+        }
+        if (num[1] <= 5) {
+            num[1] = parseInt(num[1]) + 1;
+        } else {
+            num[1] = parseInt(num[1]) - 3;
+        }
+        if (num[2] <= 5) {
+            num[2] = parseInt(num[2]) + 2;
+        } else {
+            num[2] = parseInt(num[2]) - 1;
+        }
+        while (num[0] == num[1] || num[0] == num[2] || num[1] == num[2]) {
+            if (num[1] < 7) {
+                num[1] = num[1] + 1;
+            } else {
+                num[1] = num[1] - 1;
+            }
+            if (num[2] < 7) {
+                num[2] = num[2] + 1;
+            } else {
+                num[2] = num[2] - 1;
+            }
+        }
+        var sort, finalkey;
+        sort = num.sort();
+        finalkey = sort[0] + ',' + sort[1] + ',' + sort[2];
+        return finalkey;
     }
 
     $('#phone').keypress(function() {

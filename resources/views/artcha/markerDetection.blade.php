@@ -12,10 +12,22 @@ integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="ano
 <!-- Styles -->
 <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+<style>
+    .logo {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 5%;
+        z-index: 100;
+    }
+</style>
 
 <body style="margin : 0px; overflow: hidden;">
-    <input type="hidden" id="num" value="{{ $num }}">
-
+    <input type="hidden" id="num" value="<?php echo $num; ?>">
+    <img class="logo" src="/artcha/icon/logo.jpg" alt="">
     <a-scene embedded arjs>
         <a-marker type="pattern" url="/artcha/marker_patt/pattern-2.patt" id="3Dobj-2"></a-marker>
         <a-marker type="pattern" url="/artcha/marker_patt/pattern-3.patt" id="3Dobj-3"></a-marker>
