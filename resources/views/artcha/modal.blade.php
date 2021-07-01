@@ -76,7 +76,7 @@
             <div class="card bg-warning mb-3 card-modal">
                 <div class="row g-0">
                     <div class="col-md-10">
-                        <img src="{{ asset('artcha/icon/logo.png') }}" style="width:250px;">
+                        <img src="{{ asset('artcha/icon/logo.jpg') }}" style="width:250px;">
                     </div>
                     <div class="col-md-2">
                         <input class="form-check-input artcha-checkbox" type="checkbox" value="" id="artcha-checkbox"
@@ -93,12 +93,6 @@
         aria-hidden="true">
         <div class="modal-dialog  modal-dialog-centered modal-xl " style="width: 900px; margin:auto" role="document">
             <div class="modal-content bg-dark text-white">
-                {{-- <div class="modal-header">
-                    <h5>ARTCHA (Augmented Reality CAPTCHA)</h5>
-                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div> --}}
                 <div class="modal-body">
                     <!-- Modern Horizontal Wizard -->
                     <section class="modern-horizontal-wizard">
@@ -224,7 +218,7 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    <input type="text" id="btn-counter" value="0">
                                     <input type="hidden" id="key"><br>
                                     <div class="d-flex justify-content-between">
                                         {{-- check-btn --}}
@@ -233,22 +227,7 @@
                                     </div>
                                 </div>
                                 <div id="result" class="content">
-                                    {{-- <div class="card bg-danger">
-                                        <div class="card-body text-center">
-                                            <img style="width: 30%; border: 5px solid rgb(255, 255, 255); border-radius: 50%;" src="{{ asset('artcha/icon/false.svg') }}" alt="">
-                                            <div style="margin-left:-21px; margin-bottom:-21px; width: 818px;" class="alert alert-danger mt-4" role="alert">
-                                                <span class=""><b>CAPTCHA SUCCESS   </b></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card bg-success">
-                                        <div class="card-body text-center">
-                                            <img style="width: 30%; border: 5px solid rgb(255, 255, 255); border-radius: 50%;" src="{{ asset('artcha/icon/true.svg') }}" alt="">
-                                            <div style="margin-left:-21px; margin-bottom:-21px; width: 818px;" class="alert alert-success mt-4" role="alert">
-                                                <span class=""><b>CAPTCHA SUCCESS   </b></span>
-                                            </div>
-                                        </div>
-                                    </div> --}}
+
                                 </div>
                             </div>
                         </div>
@@ -282,6 +261,7 @@
     $('.card-modal').mouseenter(function() {
         $(this).css('box-shadow', '4px 10px 10px 10px #cce3f6');
     });
+
     $('.card-modal').mouseleave(function() {
         $(this).css('box-shadow', 'none');
     });
@@ -309,14 +289,15 @@
                     alert("Link Sent to " + phone);
                     $('#artcha-form').attr('disabled', false)
                     $('#artcha-form').trigger('#send-sms').click();
-
                     let key = num[0] + ',' + num[1] + ',' + num[2];
                     console.log(key);
                     let check = checkKey(key);
                 }
-            })
+            });
         }
     });
+
+
 
     function checkKey(key) {
         $('#check-btn').click(function() {
@@ -342,53 +323,52 @@
                 $('#result-view').attr('disabled', false);
                 $('#result-view').trigger('#send-sms').click();
                 $('#reset-artcha').click(function() {
-                    var newKey = resetCaptcha(key);
-                    console.log(newKey);
-                    checkKey(newKey);
+                    var count = $('#btn-counter').val();
+                    var newKey = randomNumber();
+                    if (count == 3) {
+                        $('#result').html(
+                            '<div class="alert alert-danger mt-4" role="alert"><span class=""><b>CAPTCHA Failed</b>, Your chance are out of limit</span></div><div class="card"><div class="card-header text-center"><p class="text-muted">The CAPTCHA will be reset</p><p class="text-dark" style="margin-top: -10px;">Please Click <span class="badge badge-primary">"Send"</span> to get a new link</p></div><div class="card-body text-center"> <div class="row"><div class="col-md-2"><input type="text" value="+62" class="form-control pr-1" disabled></div><div class="col-md-8" style="margin-left:-5%;"><input type="text" id="phone-retry" class="form-control" placeholder="Phone Number"oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"maxlength="12" /><input type="hidden" id="ip-address"></div><div class="col-md-2"><button type="button" id="send-sms-retry" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Send</button></div></div></div></div>'
+                        );
+                        $('#phone-retry').val($('#phone').val());
+                        var phone = '62' + $('#phone-retry').val();
+                        $('#send-sms-retry').click(function() {
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                        'content')
+                                }
+                            });
+                            $.ajax({
+                                type: 'post',
+                                url: '/sms',
+                                data: {
+                                    'phone': phone,
+                                    'num': newKey
+                                },
+                                success: function(data) {
+                                    alert("Link Sent to " + phone);
+                                    $('#artcha-form').trigger('#send-sms').click();
+                                    let strNewKey = newKey[0] + ',' + newKey[1] +
+                                        ',' + newKey[2];
+                                    let check = checkKey(key);
+                                }
+                            });
+                        });
+                    } else {
+                        count = parseInt(count) + 1;
+                        $('#btn-counter').val(count);
+                        $('#artcha-form').trigger('#reset-artcha').click();
+                    }
                 });
             }
         });
     }
 
-    function resetCaptcha(key) {
-        var newKey = key.split(',');
-        var num = [];
-        num[0] = newKey[0];
-        num[1] = newKey[1];
-        num[2] = newKey[2];
-        if (num[0] <= 5) {
-            num[0] = parseInt(num[0]) + 2;
-        } else {
-            num[0] = parseInt(num[0]) - 3;
-        }
-        if (num[1] <= 5) {
-            num[1] = parseInt(num[1]) + 1;
-        } else {
-            num[1] = parseInt(num[1]) - 3;
-        }
-        if (num[2] <= 5) {
-            num[2] = parseInt(num[2]) + 2;
-        } else {
-            num[2] = parseInt(num[2]) - 1;
-        }
-        while (num[0] == num[1] || num[0] == num[2] || num[1] == num[2]) {
-            if (num[1] < 7) {
-                num[1] = num[1] + 1;
-            } else {
-                num[1] = num[1] - 1;
-            }
-            if (num[2] < 7) {
-                num[2] = num[2] + 1;
-            } else {
-                num[2] = num[2] - 1;
-            }
-        }
-        var sort, finalkey;
-        sort = num.sort();
-        finalkey = sort[0] + ',' + sort[1] + ',' + sort[2];
-        return finalkey;
-    }
+    $('#check-btn').click(function() {
+        var count = $('#btn-counter').val();
 
+
+    });
     $('#phone').keypress(function() {
         $(this).css('box-shadow', '2px 2px 20px #cce3f6');
     });

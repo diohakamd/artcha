@@ -36,7 +36,7 @@ integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="ano
         <a-marker type="pattern" url="/artcha/marker_patt/pattern-6.patt" id="3Dobj-6"></a-marker>
         <a-marker type="pattern" url="/artcha/marker_patt/pattern-7.patt" id="3Dobj-7"></a-marker>
         <a-entity camera></a-entity>
-    </a-scene>
+    </a-scene>  
 </body>
 
 </html>
