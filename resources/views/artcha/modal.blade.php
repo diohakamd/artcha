@@ -218,7 +218,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <input type="text" id="btn-counter" value="0">
+                                    <input type="text" id="btn-counter" value="1">
                                     <input type="hidden" id="key"><br>
                                     <div class="d-flex justify-content-between">
                                         {{-- check-btn --}}
@@ -307,16 +307,7 @@
                 checked[i] = $(".image-checkbox-checked")[i].id;
             }
             selected = checked.toString();
-            if (key == selected) {
-                $('#result').html(
-                    '<div class="card bg-success"><div class="card-body text-center"><img style="width: 30%; border: 5px solid rgb(255, 255, 255); border-radius: 50%;" src="{{ asset('artcha/icon/true.svg') }}" alt=""><div style="margin-left:-21px; margin-bottom:-21px; width: 818px;" class="alert alert-success mt-4" role="alert"><span class=""><b>CAPTCHA VALID</b></span></div></div></div>'
-                );
-                $('#result-view').attr('disabled', false);
-                $('#result-view').trigger('#send-sms').click();
-                setTimeout("$('#artcha-modal').modal('hide');", 1000);
-                $('#artcha-checkbox').attr('checked', 'checked');
-                $("#artcha").attr('data-toggle', 'valid');
-            } else {
+            if (key != selected) {
                 $('#result').html(
                     '<div class="card bg-danger"><div class="card-body text-center"><img style="width: 30%; border: 5px solid rgb(255, 255, 255); border-radius: 50%;" src="{{ asset('artcha/icon/false.svg') }}" alt=""> <div style="margin-left:-21px; margin-bottom:-21px; width: 818px;" class="alert alert-danger mt-4" role="alert"> <span class=""><b>CAPTCHA INVALID, <i>PLEASE TRY AGAIN</i> !</b></span></div></div></div><div class="text-center mt-5"><button type="button" id="reset-artcha" class="btn btn-outline-light btn-lg">Try Again</button></div>'
                 );
@@ -326,41 +317,59 @@
                     var count = $('#btn-counter').val();
                     var newKey = randomNumber();
                     if (count == 3) {
-                        $('#result').html(
-                            '<div class="alert alert-danger mt-4" role="alert"><span class=""><b>CAPTCHA Failed</b>, Your chance are out of limit</span></div><div class="card"><div class="card-header text-center"><p class="text-muted">The CAPTCHA will be reset</p><p class="text-dark" style="margin-top: -10px;">Please Click <span class="badge badge-primary">"Send"</span> to get a new link</p></div><div class="card-body text-center"> <div class="row"><div class="col-md-2"><input type="text" value="+62" class="form-control pr-1" disabled></div><div class="col-md-8" style="margin-left:-5%;"><input type="text" id="phone-retry" class="form-control" placeholder="Phone Number"oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"maxlength="12" /><input type="hidden" id="ip-address"></div><div class="col-md-2"><button type="button" id="send-sms-retry" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Send</button></div></div></div></div>'
-                        );
-                        $('#phone-retry').val($('#phone').val());
-                        var phone = '62' + $('#phone-retry').val();
-                        $('#send-sms-retry').click(function() {
-                            $.ajaxSetup({
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                                        'content')
-                                }
-                            });
-                            $.ajax({
-                                type: 'post',
-                                url: '/sms',
-                                data: {
-                                    'phone': phone,
-                                    'num': newKey
-                                },
-                                success: function(data) {
-                                    alert("Link Sent to " + phone);
-                                    $('#artcha-form').trigger('#send-sms').click();
-                                    let strNewKey = newKey[0] + ',' + newKey[1] +
-                                        ',' + newKey[2];
-                                    let check = checkKey(key);
-                                }
-                            });
-                        });
+                        key = '8,9,0';
+                        retry(newKey);
+
                     } else {
                         count = parseInt(count) + 1;
                         $('#btn-counter').val(count);
                         $('#artcha-form').trigger('#reset-artcha').click();
                     }
                 });
+
+            } else {
+                $('#result').html(
+                    '<div class="card bg-success"><div class="card-body text-center"><img style="width: 30%; border: 5px solid rgb(255, 255, 255); border-radius: 50%;" src="{{ asset('artcha/icon/true.svg') }}" alt=""><div style="margin-left:-21px; margin-bottom:-21px; width: 818px;" class="alert alert-success mt-4" role="alert"><span class=""><b>CAPTCHA VALID</b></span></div></div></div>'
+                );
+                $('#result-view').attr('disabled', false);
+                $('#result-view').trigger('#send-sms').click();
+                setTimeout("$('#artcha-modal').modal('hide');", 1000);
+                $('#artcha-checkbox').attr('checked', 'checked');
+                $("#artcha").attr('data-toggle', 'valid');
             }
+        });
+    }
+
+    function retry(newKey) {
+        $('#result').html(
+            '<div class="alert alert-danger mt-4" role="alert"><span class=""><b>CAPTCHA Failed</b>, Your chance are out of limit</span></div><div class="card"><div class="card-header text-center"><p class="text-muted">The CAPTCHA will be reset</p><p class="text-dark" style="margin-top: -10px;">Please Click <span class="badge badge-primary">"Send"</span> to get a new link</p></div><div class="card-body text-center"> <div class="row"><div class="col-md-2"><input type="text" value="+62" class="form-control pr-1" disabled></div><div class="col-md-8" style="margin-left:-5%;"><input type="text" id="phone-retry" class="form-control" placeholder="Phone Number"oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"maxlength="12" /><input type="hidden" id="ip-address"></div><div class="col-md-2"><button type="button" id="send-sms-retry" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Send</button></div></div></div></div>'
+        );
+        $('#phone-retry').val($('#phone').val());
+        var phone = '62' + $('#phone-retry').val();
+        $('#send-sms-retry').click(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                        'content')
+                }
+            });
+            $.ajax({
+                type: 'post',
+                url: '/sms',
+                data: {
+                    'phone': phone,
+                    'num': newKey
+                },
+                success: function(data) {
+                    alert("Link Sent to +" + phone);
+                    $('#artcha-form').trigger('#send-sms').click();
+                    let strNewKey = newKey[0] + ',' + newKey[1] +
+                        ',' + newKey[2];
+                    console.log(strNewKey);
+                    let check = checkKey(strNewKey);
+                    $('#btn-counter').val(1);
+                }
+            });
         });
     }
 
