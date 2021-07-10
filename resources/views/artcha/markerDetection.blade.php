@@ -23,7 +23,9 @@ integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="ano
         width: 5%;
         z-index: 100;
     }
+
 </style>
+{{-- animation="property:rotation;to:360 360 0; dur:5000;loop:true; dir:alternate;" --}}
 
 <body style="margin : 0px; overflow: hidden;">
     <input type="hidden" id="num" value="<?php echo $num; ?>">
@@ -36,7 +38,8 @@ integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="ano
         <a-marker type="pattern" url="/artcha/marker_patt/pattern-6.patt" id="3Dobj-6"></a-marker>
         <a-marker type="pattern" url="/artcha/marker_patt/pattern-7.patt" id="3Dobj-7"></a-marker>
         <a-entity camera></a-entity>
-    </a-scene>  
+        <a-light type="spot" position="0 0 4" intensity="1"></a-light>
+    </a-scene>
 </body>
 
 </html>
@@ -44,8 +47,8 @@ integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="ano
     $(document).ready(function() {
         let get = $('#num').val();
         let num = get.split(",");
-        $('#3Dobj-' + num[0]).html('<a-box color="yellow" material="opacity:0.9" scale="0.5 0.5 0.5"></a-box>')
-        $('#3Dobj-' + num[1]).html('<a-box color="red" material="opacity:0.9" scale="0.5 0.5 0.5"></a-box>')
-        $('#3Dobj-' + num[2]).html('<a-box color="green" material="opacity:0.9" scale="0.5 0.5 0.5"></a-box>')
+        $('#3Dobj-' + num[0]).html('<a-obj-model src="/artcha/3d/shield.obj" color="#662E9B" material="opacity:0.8" scale="0.07 0.07 0.07" position="0.1 0 -0.1" ></a-obj-model><a-obj-model src="/artcha/3d/text.obj" color="#F6F4F3" material="opacity:0.9" scale="0.07 0.07 0.07" position="0.1 0 -0.1" ></a-obj-model><a-obj-model src="/artcha/3d/line.obj" color="#F6F4F3" material="opacity:0.2" scale="0.07 0.07 0.07" position="0.1 0 -0.1"></a-obj-model>');
+        $('#3Dobj-' + num[1]).html('<a-obj-model src="/artcha/3d/shield.obj" color="#276FBF" material="opacity:0.8" scale="0.07 0.07 0.07" position="0.1 0 -0.1" ></a-obj-model><a-obj-model src="/artcha/3d/text.obj" color="#F6F4F3" material="opacity:0.9" scale="0.07 0.07 0.07" position="0.1 0 -0.1" ></a-obj-model><a-obj-model src="/artcha/3d/line.obj" color="#F6F4F3" material="opacity:0.2" scale="0.07 0.07 0.07" position="0.1 0 -0.1"></a-obj-model>');
+        $('#3Dobj-' + num[2]).html('<a-obj-model src="/artcha/3d/shield.obj" color="#F03A47" material="opacity:0.8" scale="0.07 0.07 0.07" position="0.1 0 -0.1" ></a-obj-model><a-obj-model src="/artcha/3d/text.obj" color="#F6F4F3" material="opacity:0.9" scale="0.07 0.07 0.07" position="0.1 0 -0.1" ></a-obj-model><a-obj-model src="/artcha/3d/line.obj" color="#F6F4F3" material="opacity:0.2" scale="0.07 0.07 0.07" position="0.1 0 -0.1"></a-obj-model>');
     });
 </script>
