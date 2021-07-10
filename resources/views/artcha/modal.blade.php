@@ -10,9 +10,9 @@
         background-color: rgb(255, 255, 255);
         border-radius: 20%;
         -webkit-appearance: none;
-        width: 35px;
-        height: 40px;
-        margin-top: 40px;
+        width: 25pt;
+        height: 27pt;
+        margin-top: 42px;
         position: relative;
         z-index: 1;
     }
@@ -68,7 +68,7 @@
 </style>
 
 <div class="col-md-6 offset-md-4 mb-3">
-    <div class="alert alert-warning ml-3" role="alert">
+    <div class="alert alert-warning ml-3" id="artcha-alert" role="alert">
         <i>Fill the CAPTCHA bellow to continue</i>
     </div>
     <div class="form-check" style="margin-top: -10px;">
@@ -76,7 +76,7 @@
             <div class="card bg-warning mb-3 card-modal">
                 <div class="row g-0">
                     <div class="col-md-10">
-                        <img src="{{ asset('artcha/icon/logo.jpg') }}" style="width:250px;">
+                        <img src="{{ asset('artcha/icon/logo.jpg') }}" style="width:100%;">
                     </div>
                     <div class="col-md-2">
                         <input class="form-check-input artcha-checkbox" type="checkbox" value="" id="artcha-checkbox"
@@ -159,6 +159,7 @@
                                             <button type="button" id="send-sms" class="btn btn-primary"><i
                                                     class="fas fa-paper-plane"></i> Send
                                             </button>
+                                            <div class="countdown"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -242,6 +243,32 @@
 <script src="{{ asset('js/form-wizard.js') }}"></script>
 <script src="{{ asset('js/bs-stepper.min.js') }}"></script>
 <script>
+    function countdownBtn() {
+        $('#send-sms').attr('disabled', true);
+        $('.countdown').css('visibility', 'show');
+        var timer2 = "3:00";
+        var interval = setInterval(function() {
+            var timer = timer2.split(':');
+            //by parsing integer, I avoid all extra string processing
+            var minutes = parseInt(timer[0], 10);
+            var seconds = parseInt(timer[1], 10);
+            --seconds;
+            minutes = (seconds < 0) ? --minutes : minutes;
+            if (minutes < 0) clearInterval(interval);
+            seconds = (seconds < 0) ? 59 : seconds;
+            seconds = (seconds < 10) ? '0' + seconds : seconds;
+            //minutes = (minutes < 10) ?  minutes : minutes;
+            $('.countdown').html(minutes + ':' + seconds);
+            timer2 = minutes + ':' + seconds;
+
+            if (minutes == 0 && seconds == 0) {
+                console.log('habis');
+                $('#send-sms').attr('disabled', false);
+                $('.countdown').css('visibility', 'hidden');
+            }
+        }, 1000);
+    }
+
     function randomNumber() {
 
         const num = [];
@@ -286,12 +313,16 @@
                     'num': num
                 },
                 success: function(data) {
-                    alert("Link Sent to " + phone);
+                    alert("Link Sent to +" + phone);
                     $('#artcha-form').attr('disabled', false)
                     $('#artcha-form').trigger('#send-sms').click();
                     let key = num[0] + ',' + num[1] + ',' + num[2];
                     console.log(key);
+                    countdownBtn();
                     let check = checkKey(key);
+                },
+                error: function() {
+                    alert("Phone number invalid");
                 }
             });
         }
@@ -333,6 +364,7 @@
                 );
                 $('#result-view').attr('disabled', false);
                 $('#result-view').trigger('#send-sms').click();
+                $('#artcha-alert').html(null);
                 setTimeout("$('#artcha-modal').modal('hide');", 1000);
                 $('#artcha-checkbox').attr('checked', 'checked');
                 $("#artcha").attr('data-toggle', 'valid');
