@@ -14,13 +14,13 @@ class SMSController extends Controller
         $numEncrypt = Crypt::encryptString($num);
         $baseURL = url('/');
         $to = $request->phone;
-        $link = $baseURL . '/' . $numEncrypt;
+        $link = $baseURL . '/detect/' . $numEncrypt;
         // $link = 'https://b6a5f3de3911.ngrok.io/detect/'.$numEncrypt;
-        // Nexmo::message()->send([
-        //     'to' => $to,
-        //     'from' => 'ARTCHA',
-        //     'text' => 'Scan the marker using this link >>> ' . $link . '  <<< '
-        // ]);
+        Nexmo::message()->send([
+            'to' => $to,
+            'from' => 'ARTCHA',
+            'text' => 'Scan the marker using this link >>> ' . $link . '  <<< '
+        ]);
         return response()->json($baseURL);
     }
 }
