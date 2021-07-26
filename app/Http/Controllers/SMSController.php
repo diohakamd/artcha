@@ -14,7 +14,8 @@ class SMSController extends Controller
         $numEncrypt = Crypt::encryptString($num);
         $baseURL = url('/');
         $to = $request->phone;
-        $link = $baseURL . '/detect/' . $numEncrypt;
+        // $link = $baseURL . '/detect/' . $numEncrypt;
+        $link = 'https://artcha.herokuapp.com/detect/' . $numEncrypt;
         // $link = 'https://b6a5f3de3911.ngrok.io/detect/'.$numEncrypt;
         Nexmo::message()->send([
             'to' => $to,
