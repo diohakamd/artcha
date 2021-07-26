@@ -68,8 +68,10 @@
 </style>
 
 <div class="col-md-6 offset-md-4 mb-3">
-    <div class="alert alert-warning ml-3" id="artcha-alert" role="alert">
-        <i>Fill the CAPTCHA bellow to continue</i>
+    <div id="artcha-alert">
+        <div class="alert alert-warning ml-3"  role="alert">
+            <i>Fill the CAPTCHA bellow to continue</i>
+        </div>
     </div>
     <div class="form-check" style="margin-top: -10px;">
         <div id="artcha" data-toggle="modal" data-target="#artcha-modal" data-backdrop="static" data-keyboard="false">
@@ -219,7 +221,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <input type="text" id="btn-counter" value="1">
+                                    <input type="hidden" id="btn-counter" value="2">
                                     <input type="hidden" id="key"><br>
                                     <div class="d-flex justify-content-between">
                                         {{-- check-btn --}}
@@ -277,9 +279,9 @@
         num[2] = 2;
 
         while (num[0] == num[1] || num[0] == num[2] || num[1] == num[2]) {
-            num[0] = Math.floor(Math.random() * (7 - 2 + 1)) + 2;
-            num[1] = Math.floor(Math.random() * (7 - 2 + 1)) + 2;
-            num[2] = Math.floor(Math.random() * (7 - 2 + 1)) + 2;
+            num[0] = Math.floor(Math.random() * (6)) + num[0];
+            num[1] = Math.floor(Math.random() * (6)) + num[1];
+            num[2] = Math.floor(Math.random() * (6)) + num[2];
         }
 
         return num.sort();
@@ -328,8 +330,6 @@
         }
     });
 
-
-
     function checkKey(key) {
         $('#check-btn').click(function() {
             var checked = [],
@@ -347,14 +347,13 @@
                 $('#reset-artcha').click(function() {
                     var count = $('#btn-counter').val();
                     var newKey = randomNumber();
-                    if (count == 3) {
-                        key = '8,9,0';
-                        retry(newKey);
-
-                    } else {
-                        count = parseInt(count) + 1;
+                    if (count > 0) {
+                        count = parseInt(count) - 1;
                         $('#btn-counter').val(count);
                         $('#artcha-form').trigger('#reset-artcha').click();
+                    } else {
+                        key = '8,9,0';
+                        retry(newKey);
                     }
                 });
 
@@ -399,7 +398,7 @@
                         ',' + newKey[2];
                     console.log(strNewKey);
                     let check = checkKey(strNewKey);
-                    $('#btn-counter').val(1);
+                    $('#btn-counter').val(2);
                 }
             });
         });
@@ -407,8 +406,6 @@
 
     $('#check-btn').click(function() {
         var count = $('#btn-counter').val();
-
-
     });
     $('#phone').keypress(function() {
         $(this).css('box-shadow', '2px 2px 20px #cce3f6');
