@@ -67,7 +67,7 @@
 
 </style>
 
-<div class="col-md-6 offset-md-4 mb-3">
+<div class="col-md-6 offset-md-4 mb-3 mt-2">
     <div id="artcha-alert">
         <div class="alert alert-warning ml-3"  role="alert">
             <i>Fill the CAPTCHA bellow to continue</i>
@@ -245,6 +245,9 @@
 <script src="{{ asset('js/form-wizard.js') }}"></script>
 <script src="{{ asset('js/bs-stepper.min.js') }}"></script>
 <script>
+    $(document).ready(function(){
+        $("button[type=submit]").css('visibility','hidden');
+    });
     function countdownBtn() {
         $('#send-sms').attr('disabled', true);
         $('.countdown').css('visibility', 'show');
@@ -367,6 +370,7 @@
                 setTimeout("$('#artcha-modal').modal('hide');", 1000);
                 $('#artcha-checkbox').attr('checked', 'checked');
                 $("#artcha").attr('data-toggle', 'valid');
+                $("button[type=submit]").css('visibility','visible');
             }
         });
     }

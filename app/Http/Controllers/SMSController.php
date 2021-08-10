@@ -17,11 +17,11 @@ class SMSController extends Controller
         // $link = $baseURL . '/detect/' . $numEncrypt;
         $link = 'https://artcha.herokuapp.com/detect/' . $numEncrypt;
         // $link = 'https://b6a5f3de3911.ngrok.io/detect/'.$numEncrypt;
-        Nexmo::message()->send([
-            'to' => $to,
-            'from' => 'ARTCHA',
-            'text' => 'Scan the marker using this link >>> ' . $link . '  <<< '
-        ]);
+        // Nexmo::message()->send([
+        //     'to' => $to,
+        //     'from' => 'ARTCHA',
+        //     'text' => 'Scan the marker using this link >>> ' . $link . '  <<< '
+        // ]);
         return response()->json($baseURL);
     }
 }
