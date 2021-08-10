@@ -303,8 +303,7 @@
         if ($('#phone').val().length < 1) {
             $('#phone').css('box-shadow', '2px 2px 20px rgba(200, 0, 0, 0.85)');
         } else {
-            var phone = '62' + $('#phone').val(),
-                ip = $('#ip-address').val();
+            var phone = '62' + $('#phone').val();
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -324,7 +323,7 @@
                     let key = num[0] + ',' + num[1] + ',' + num[2];
                     console.log(key);
                     countdownBtn();
-                    let check = checkKey(key);
+                    let check = checkKey("2,4,7");
                 },
                 error: function() {
                     alert("Phone number invalid");

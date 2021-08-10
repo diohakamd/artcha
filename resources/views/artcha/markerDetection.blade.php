@@ -45,6 +45,7 @@ integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="ano
 </html>
 <script>
     $(document).ready(function() {
+        screen.orientation.lock('landscape');
         let get = $('#num').val();
         let num = get.split(",");
         $('#3Dobj-' + num[0]).html('<a-obj-model src="/artcha/3d/shield.obj" color="#662E9B" material="opacity:0.8" scale="0.07 0.07 0.07" position="0.1 0 -0.1" ></a-obj-model><a-obj-model src="/artcha/3d/text.obj" color="#F6F4F3" material="opacity:0.9" scale="0.07 0.07 0.07" position="0.1 0 -0.1" ></a-obj-model><a-obj-model src="/artcha/3d/line.obj" color="#F6F4F3" material="opacity:0.2" scale="0.07 0.07 0.07" position="0.1 0 -0.1"></a-obj-model>');
