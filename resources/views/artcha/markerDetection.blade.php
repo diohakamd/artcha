@@ -1,6 +1,5 @@
 <html>
 <!-- Scripts -->
-<script src="{{ asset('js/app.js') }}" defer></script>
 <script src="/js/a-frame.js"></script>
 <script src="/js/ar.js"></script>
 {{-- jquery cdn --}}

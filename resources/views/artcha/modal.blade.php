@@ -286,16 +286,15 @@
     }
 
     function randomNumber() {
-
         const num = [];
         num[0] = 2;
         num[1] = 2;
         num[2] = 2;
 
         while (num[0] == num[1] || num[0] == num[2] || num[1] == num[2]) {
-            num[0] = Math.floor(Math.random() * (6)) + num[0];
-            num[1] = Math.floor(Math.random() * (6)) + num[1];
-            num[2] = Math.floor(Math.random() * (6)) + num[2];
+            num[0] = Math.floor(Math.random() * (6)) + 2;
+            num[1] = Math.floor(Math.random() * (6)) + 2;
+            num[2] = Math.floor(Math.random() * (6)) + 2;
         }
 
         return num.sort();
