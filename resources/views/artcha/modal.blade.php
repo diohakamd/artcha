@@ -5,6 +5,17 @@
 <link rel="stylesheet" href="{{ asset('css/bs-stepper.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/form-wizard.css') }}">
 <style>
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
     input.artcha-checkbox[type="checkbox"] {
         border: 3px solid rgb(88, 88, 88) !important;
         background-color: rgb(255, 255, 255);
@@ -152,10 +163,10 @@
                                             <input type="text" value="+62" class="form-control pr-1" disabled>
                                         </div>
                                         <div class="col-md-8" style="margin-left:-5%;">
-                                            <input type="text" id="phone" class="form-control" aria-describedby="no_rw"
+                                            <input type="number" id="phone" class="form-control" aria-describedby="no_rw"
                                                 placeholder="Phone Number"
                                                 oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                maxlength="12" /><input type="hidden" id="ip-address">
+                                                maxlength="12" />
                                         </div>
                                         <div class="col-md-2">
                                             <button type="button" id="send-sms" class="btn btn-primary"><i
@@ -267,7 +278,7 @@
             timer2 = minutes + ':' + seconds;
 
             if (minutes == 0 && seconds == 0) {
-                console.log('habis');
+                // console.log('habis');
                 $('#send-sms').attr('disabled', false);
                 $('.countdown').css('visibility', 'hidden');
             }
@@ -321,9 +332,9 @@
                     $('#artcha-form').attr('disabled', false)
                     $('#artcha-form').trigger('#send-sms').click();
                     let key = num[0] + ',' + num[1] + ',' + num[2];
-                    console.log(key);
+                    // console.log(key);
                     countdownBtn();
-                    let check = checkKey("2,4,7");
+                    let check = checkKey(key);
                 },
                 error: function() {
                     alert("Phone number invalid");
@@ -399,7 +410,7 @@
                     $('#artcha-form').trigger('#send-sms').click();
                     let strNewKey = newKey[0] + ',' + newKey[1] +
                         ',' + newKey[2];
-                    console.log(strNewKey);
+                    // console.log(strNewKey);
                     let check = checkKey(strNewKey);
                     $('#btn-counter').val(2);
                 }

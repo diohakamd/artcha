@@ -8,7 +8,7 @@
                     <div class="card-header">{{ __('Register') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('register') }}">
+                        <form method="get" action="{{ route('success') }}">
                             @csrf
 
                             <div class="form-group row">
@@ -75,7 +75,7 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-6">
                                     <button type="submit" class="btn btn-primary">
-                                        {{ __('Register') }}
+                                        Register
                                     </button>
                                 </div>
                             </div>
